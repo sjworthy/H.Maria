@@ -1,0 +1,203 @@
+library(vegan)
+setwd("/Users/samanthaworthy/Desktop/Impact.Hurr.Maria")
+
+# Read in Data
+
+p300.17=read.csv("Plot.300.2017.csv", header=T)
+p400.17=read.csv("Plot.400.2017.csv", header=T)
+p500.17=read.csv("Plot.500.2017.csv", header=T)
+p300.18=read.csv("Plot.300.2018.csv", header=T)
+p400.18=read.csv("Plot.400.2018.csv", header=T)
+p500.18=read.csv("Plot.500.2018.csv", header=T) 
+All=read.csv("All.seedlings.csv", header=T)
+All.2017=read.csv("All.2017.csv", header=T)
+All.2018=read.csv("All.2018.csv", header=T)
+
+# Number of individuals per plot
+
+nrow(p300.17)
+nrow(p400.17)
+nrow(p500.17)
+nrow(p300.18)
+nrow(p400.18)
+nrow(p500.18)
+
+
+# Determining the number of families per plot
+
+fam.300.17=table(p300.17$Family)
+write.csv(fam.300.17, file="fam.300.17.csv")
+unique(p300.17$Family)
+fam.300.18=table(p300.18$Family)
+write.csv(fam.300.18, file="fam.300.18.csv")
+unique(p300.18$Family)
+fam.400.17=table(p400.17$Family)
+write.csv(fam.400.17, file="fam.400.17.csv")
+unique(p400.17$Family)
+fam.400.18=table(p400.18$Family)
+write.csv(fam.400.18, file="fam.400.18.csv")
+unique(p400.18$Family)
+fam.500.17=table(p500.17$Family)
+write.csv(fam.500.17, file="fam.500.17.csv")
+unique(p500.17$Family)
+fam.500.18=table(p500.18$Family)
+write.csv(fam.500.18, file="fam.500.18.csv")
+unique(p500.18$Family)
+
+# Determining the number of genera per plot
+
+gen.300.17=table(p300.17$Genus)
+write.csv(gen.300.17, file="gen.300.17.csv")
+unique(p300.17$Genus)
+gen.300.18=table(p300.18$Genus)
+write.csv(gen.300.18, file="gen.300.18.csv")
+unique(p300.18$Genus)
+gen.400.17=table(p400.17$Genus)
+write.csv(gen.400.17, file="gen.400.17.csv")
+unique(p400.17$Genus)
+gen.400.18=table(p400.18$Genus)
+write.csv(gen.400.18, file="gen.400.18.csv")
+unique(p400.18$Genus)
+gen.500.17=table(p500.17$Genus)
+write.csv(gen.500.17, file="gen.500.17.csv")
+unique(p500.17$Genus)
+gen.500.18=table(p500.18$Genus)
+write.csv(gen.500.18, file="gen.500.18.csv")
+unique(p500.18$Genus)
+
+# Determining the number of species per plot
+
+sp.300.17=table(p300.17$Taxa)
+write.csv(sp.300.17, file="sp.300.17.csv")
+unique(p300.17$Taxa)
+sp.300.18=table(p300.18$Taxa)
+write.csv(sp.300.18, file="sp.300.18.csv")
+unique(p300.18$Taxa)
+sp.400.17=table(p400.17$Taxa)
+write.csv(sp.400.17, file="sp.400.17.csv")
+unique(p400.17$Taxa)
+sp.400.18=table(p400.18$Taxa)
+write.csv(sp.400.18, file="sp.400.18.csv")
+unique(p400.18$Taxa)
+sp.500.17=table(p500.17$Taxa)
+write.csv(sp.500.17, file="sp.500.17.csv")
+unique(p500.17$Taxa)
+sp.500.18=table(p500.18$Taxa)
+write.csv(sp.500.18, file="sp.500.18.csv")
+unique(p500.18$Taxa)
+
+# Making community data matrices
+
+abund.cdm = matrix(data=NA, nrow = 6, ncol = 63)
+row.names(abund.cdm) = c("p.300.17", "p.300.18", "p.400.17", "p.400.18", "p.500.17", "p.500.18")
+colnames(abund.cdm) = as.factor(unique(All$Taxa))
+
+abund.cdm=read.csv("abund.cdm.csv", header=T, row.names=1)
+
+
+# Calculate species richness
+richness=specnumber(abund.cdm)
+
+# Calculate shannon diversity
+shannon=diversity(abund.cdm, index="shannon")
+
+# Calculate Pielou's evenness, correlated with shannon.
+
+evenness=shannon/log(specnumber(abund.cdm))
+
+# Calculate taxonomic diversity and distinctness
+# need table where sp. code is row names and columns are Genus, Family, Order, Superorder, subclass, etc (taxa.table)
+
+tax.tab.300.17=read.csv("tax.tab.300.17.csv", header=T, row.names=1)
+tax.tab.300.18=read.csv("tax.tab.300.18.csv", header=T, row.names=1)
+tax.tab.400.17=read.csv("tax.tab.400.17.csv", header=T, row.names=1)
+tax.tab.400.18=read.csv("tax.tab.400.18.csv", header=T, row.names=1)
+tax.tab.500.17=read.csv("tax.tab.500.17.csv", header=T, row.names=1)
+tax.tab.500.18=read.csv("tax.tab.500.18.csv", header=T, row.names=1)
+tax.tab.all=read.csv("tax.tab.all.csv", header=T, row.names=1)
+
+taxdis.all=taxa2dist(tax.tab.all, varstep=TRUE)
+mod=taxondive(abund.cdm, taxdis.all)
+plot(hclust(taxdis.all), hang= -1)
+plot(mod)
+summary(mod)
+
+# Calculate Sorensen index of dissimilarity
+beta=vegdist(abund.cdm, binary=TRUE)
+mean(beta)
+
+# Calculate density
+
+density=number.of.species/area
+total.density=number.of.individuals/area
+
+# Calculate species frequency
+
+freq=percentage of subplots in which an individual
+was present within each plot
+
+
+#convert to relative abundance by dividing by total of rows
+decostand(abund.cdm, method = "total")
+
+#jaccard similarity index for beta diversity matrix output
+jaccard.output = vegdist(abund.cdm, method="jaccard", diag=TRUE, upper = TRUE)
+jaccard.output 
+
+#Inverse Simpson's Diversity
+
+invsimp=diversity(abund.cdm, index="invsimpson")
+invsimp.gen=diversity(gen.cdm, index="invsimpson")
+invsimp.fam=diversity(fam.cdm, index="invsimpson")
+
+# Evenness, not correlated with shannon
+
+even=invsimp/richness
+even.gen=invsimp.gen/richness.gen
+even.fam=invsimp.fam/richness.fam
+
+#bray curtis (abundance weighted metric()
+bray.output = vegdist(abund.cdm, method="bray")
+
+Community Dominance Index - reflects how large a proportion of the total species
+present in terms of numbers of individuals) is made up of the two most
+abundant species.
+
+100*(y1 + y2)/Y y1 and y2 = abundances of 2 most common species, y is total abundance
+
+Plot beta diversity
+
+plot(bray[,1]~row.names(bray), pch=19, col="black", ylim=c(0,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+par(new=TRUE)
+plot(bray[,2]~row.names(bray), pch=19, col="red",ylim=c(0,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+xtick=seq(300,500, by=100)
+axis(side=1, at=xtick)
+
+legend("topleft", legend=c("Bray-Curtis", "Jaccard"), col=c("black", "red"), pch=19)
+
+plot(beta[,1]~row.names(beta), pch=19, col="black",ylim=c(0.8,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+par(new=TRUE)
+plot(beta[,2]~row.names(beta), pch=19, col="red",ylim=c(0.8,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+xtick=seq(300,500, by=100)
+axis(side=1, at=xtick)
+
+legend("topright", legend=c("Jaccard-pre H. Maria", "Jaccard-post H. Maria"), col=c("black", "red"), pch=19)
+
+
+plot(beta[,3]~row.names(beta), pch=19, col="black", ylim=c(0.3,0.6), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+par(new=TRUE)
+plot(beta[,4]~row.names(beta), pch=19, col="red",ylim=c(0.3,0.6), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+xtick=seq(300,500, by=100)
+axis(side=1, at=xtick)
+
+legend("topright", legend=c("Bray-Curtis-pre H. Maria", "Bray-Curtis-post H. Maria"), col=c("black", "red"), pch=19)
+
+# Beta years
+
+plot(beta.2[,1]~row.names(beta.2), pch=19, col="black",ylim=c(0.6,0.9), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+par(new=TRUE)
+plot(beta.2[,2]~row.names(beta.2), pch=19, col="red",ylim=c(0.6,0.9), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
+xtick=seq(300,500, by=100)
+axis(side=1, at=xtick, labels=c("300m-400m", "300m-500m", "400m-500m"))
+
+legend("bottomleft", legend=c("Jaccard-pre H. Maria", "Jaccard-post H. Maria"), col=c("black", "red"), pch=19)
