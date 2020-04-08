@@ -1,5 +1,4 @@
 library(vegan)
-setwd("/Users/samanthaworthy/Desktop/Impact.Hurr.Maria")
 
 # Read in Data
 
@@ -101,69 +100,8 @@ richness=specnumber(abund.cdm)
 # Calculate shannon diversity
 shannon=diversity(abund.cdm, index="shannon")
 
-# Calculate Pielou's evenness, correlated with shannon.
-
-evenness=shannon/log(specnumber(abund.cdm))
-
-# Calculate taxonomic diversity and distinctness
-# need table where sp. code is row names and columns are Genus, Family, Order, Superorder, subclass, etc (taxa.table)
-
-tax.tab.300.17=read.csv("tax.tab.300.17.csv", header=T, row.names=1)
-tax.tab.300.18=read.csv("tax.tab.300.18.csv", header=T, row.names=1)
-tax.tab.400.17=read.csv("tax.tab.400.17.csv", header=T, row.names=1)
-tax.tab.400.18=read.csv("tax.tab.400.18.csv", header=T, row.names=1)
-tax.tab.500.17=read.csv("tax.tab.500.17.csv", header=T, row.names=1)
-tax.tab.500.18=read.csv("tax.tab.500.18.csv", header=T, row.names=1)
-tax.tab.all=read.csv("tax.tab.all.csv", header=T, row.names=1)
-
-taxdis.all=taxa2dist(tax.tab.all, varstep=TRUE)
-mod=taxondive(abund.cdm, taxdis.all)
-plot(hclust(taxdis.all), hang= -1)
-plot(mod)
-summary(mod)
-
-# Calculate Sorensen index of dissimilarity
-beta=vegdist(abund.cdm, binary=TRUE)
-mean(beta)
-
-# Calculate density
-
-density=number.of.species/area
-total.density=number.of.individuals/area
-
-# Calculate species frequency
-
-freq=percentage of subplots in which an individual
-was present within each plot
-
-
-#convert to relative abundance by dividing by total of rows
-decostand(abund.cdm, method = "total")
-
-#jaccard similarity index for beta diversity matrix output
-jaccard.output = vegdist(abund.cdm, method="jaccard", diag=TRUE, upper = TRUE)
-jaccard.output 
-
-#Inverse Simpson's Diversity
-
-invsimp=diversity(abund.cdm, index="invsimpson")
-invsimp.gen=diversity(gen.cdm, index="invsimpson")
-invsimp.fam=diversity(fam.cdm, index="invsimpson")
-
-# Evenness, not correlated with shannon
-
-even=invsimp/richness
-even.gen=invsimp.gen/richness.gen
-even.fam=invsimp.fam/richness.fam
-
-#bray curtis (abundance weighted metric()
+#bray curtis
 bray.output = vegdist(abund.cdm, method="bray")
-
-Community Dominance Index - reflects how large a proportion of the total species
-present in terms of numbers of individuals) is made up of the two most
-abundant species.
-
-100*(y1 + y2)/Y y1 and y2 = abundances of 2 most common species, y is total abundance
 
 Plot beta diversity
 
