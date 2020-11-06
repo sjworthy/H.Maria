@@ -1,4 +1,4 @@
-# Site-specific impacts of Hurricane Maria on alpha and beta diversity in seedling communities
+# Site-specific impacts of a major hurricane on alpha and beta diversity in tropical forest seedling communities
 
 
 
