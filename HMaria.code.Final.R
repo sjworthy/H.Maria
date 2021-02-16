@@ -1,4 +1,5 @@
 library(vegan)
+setwd("/Users/samanthaworthy/Desktop/Impact.Hurr.Maria")
 
 # Read in Data
 
@@ -9,7 +10,7 @@ p300.18=read.csv("Plot.300.2018.csv", header=T)
 p400.18=read.csv("Plot.400.2018.csv", header=T)
 p500.18=read.csv("Plot.500.2018.csv", header=T) 
 All=read.csv("All.seedlings.csv", header=T)
-All.2017=read.csv("All.2017.csv", header=T)
+All.2017=read.csv("All.2017.csv", header=T) # missing PSYBER species
 All.2018=read.csv("All.2018.csv", header=T)
 
 # Number of individuals per plot
@@ -20,7 +21,6 @@ nrow(p500.17)
 nrow(p300.18)
 nrow(p400.18)
 nrow(p500.18)
-
 
 # Determining the number of families per plot
 
@@ -93,49 +93,26 @@ colnames(abund.cdm) = as.factor(unique(All$Taxa))
 
 abund.cdm=read.csv("abund.cdm.csv", header=T, row.names=1)
 
-
+all.abund.cdm=read.csv("abund.cdm.all.csv", header=T, row.names = 1)
 # Calculate species richness
 richness=specnumber(abund.cdm)
+all.richness=specnumber(all.abund.cdm)
 
-# Calculate shannon diversity
-shannon=diversity(abund.cdm, index="shannon")
+# Calculating Fisher's Alpha
 
-#bray curtis
+alpha=fisher.alpha(abund.cdm)
+alpha.all=fisher.alpha(all.abund.cdm)
+
+# Calculate Inverse Simpson's Diversity
+
+invsimp=diversity(abund.cdm, index="invsimpson")
+all.invsimp=diversity(all.abund.cdm, index = "invsimpson")
+
+# Evenness, not correlated with shannon
+
+even=invsimp/richness
+all.even=all.invsimp/all.richness
+
+#bray curtis (abundance weighted metric()
 bray.output = vegdist(abund.cdm, method="bray")
 
-Plot beta diversity
-
-plot(bray[,1]~row.names(bray), pch=19, col="black", ylim=c(0,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-par(new=TRUE)
-plot(bray[,2]~row.names(bray), pch=19, col="red",ylim=c(0,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-xtick=seq(300,500, by=100)
-axis(side=1, at=xtick)
-
-legend("topleft", legend=c("Bray-Curtis", "Jaccard"), col=c("black", "red"), pch=19)
-
-plot(beta[,1]~row.names(beta), pch=19, col="black",ylim=c(0.8,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-par(new=TRUE)
-plot(beta[,2]~row.names(beta), pch=19, col="red",ylim=c(0.8,1), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-xtick=seq(300,500, by=100)
-axis(side=1, at=xtick)
-
-legend("topright", legend=c("Jaccard-pre H. Maria", "Jaccard-post H. Maria"), col=c("black", "red"), pch=19)
-
-
-plot(beta[,3]~row.names(beta), pch=19, col="black", ylim=c(0.3,0.6), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-par(new=TRUE)
-plot(beta[,4]~row.names(beta), pch=19, col="red",ylim=c(0.3,0.6), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-xtick=seq(300,500, by=100)
-axis(side=1, at=xtick)
-
-legend("topright", legend=c("Bray-Curtis-pre H. Maria", "Bray-Curtis-post H. Maria"), col=c("black", "red"), pch=19)
-
-# Beta years
-
-plot(beta.2[,1]~row.names(beta.2), pch=19, col="black",ylim=c(0.6,0.9), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-par(new=TRUE)
-plot(beta.2[,2]~row.names(beta.2), pch=19, col="red",ylim=c(0.6,0.9), xaxt="n", ylab="Dissimilarity", xlab="Elevation (m)")
-xtick=seq(300,500, by=100)
-axis(side=1, at=xtick, labels=c("300m-400m", "300m-500m", "400m-500m"))
-
-legend("bottomleft", legend=c("Jaccard-pre H. Maria", "Jaccard-post H. Maria"), col=c("black", "red"), pch=19)
