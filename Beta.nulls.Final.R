@@ -1,3 +1,6 @@
+library(picante)
+library(abind)
+
 # Null Model 1 for Figure 2
 
 # CDM has 25 rows, 1 for each 1mx1m plot
@@ -20,8 +23,6 @@ abund.cdm.500.25.pre=table(plot.500.2017$Subplot, plot.500.2017$SpCode)
 plot.500.2018=read.csv("Plot.500.2018.csv", header=T)
 abund.cdm.500.25.post=table(plot.500.2018$St, plot.500.2018$Sp.Code)
 
-library(picante)
-library(abind)
 
 # Observed distribution of Bray-Curtis
 
@@ -215,32 +216,43 @@ rank.out[,,1]
 
 # Figure 3 Plot
 
-plot(bray.results[,1]~row.names(bray.results), pch=19, col="black",ylim=c(0.4,0.8), type="b", cex=2, xaxt="n", ylab="Bray-Curtis Dissimilarity", xlab="Elevation (m)")
+bray.results=read.csv("bray.results.csv",header=T, row.names=1)
+
+plot(bray.results[,1]~row.names(bray.results), pch=19, col="black",ylim=c(0.4,0.8), 
+     type="b", cex=2, xaxt="n", ylab="Bray-Curtis Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 par(new=TRUE)
-plot(bray.results[,2]~row.names(bray.results), pch=19, col="red",ylim=c(0.4,0.8), type="b", cex=2, xaxt="n", ylab="Bray-Curtis Dissimilarity", xlab="Elevation (m)")
+plot(bray.results[,2]~row.names(bray.results), pch=19, col="red",ylim=c(0.4,0.8), 
+     type="b", cex=2, xaxt="n", ylab="Bray-Curtis Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 xtick=seq(300,500, by=100)
-axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"))
+axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"), cex.axis=1.2)
 legend("topleft", legend=c("pre H. Maria", "post H. Maria"), col=c("black", "red"), lty=1, pch=19)
 
-plot(bray.results[,3]~row.names(bray.results), pch=19, col="black",ylim=c(-1.2,1), type="b",cex=2,xaxt="n", ylab="SES.Bray-Curtis Dissimilarity", xlab="Elevation (m)")
+plot(bray.results[,3]~row.names(bray.results), pch=19, col="black",ylim=c(-1.2,1), 
+     type="b",cex=2,xaxt="n", ylab="SES.Bray-Curtis Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 par(new=TRUE)
-plot(bray.results[,4]~row.names(bray.results), pch=19, col="red",ylim=c(-1.2,1), type="b",cex=2,xaxt="n", ylab="SES.Bray-Curtis Dissimilarity", xlab="Elevation (m)")
+plot(bray.results[,4]~row.names(bray.results), pch=19, col="red",ylim=c(-1.2,1), 
+     type="b",cex=2,xaxt="n", ylab="SES.Bray-Curtis Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 xtick=seq(300,500, by=100)
-axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"))
+axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"), cex.axis=1.2)
 legend("topleft", legend=c("pre H. Maria", "post H. Maria"), col=c("black", "red"),lty=1, pch=19)
 
-plot(raup.results[,1]~row.names(raup.results), pch=19, col="black",ylim=c(0,1), type="b", cex=2, xaxt="n", ylab="Raup-Crick Dissimilarity", xlab="Elevation (m)")
+raup.results=read.csv("raup.results.csv", header=T, row.names=1)
+plot(raup.results[,1]~row.names(raup.results), pch=19, col="black",ylim=c(0,1), 
+     type="b", cex=2, xaxt="n", ylab="Raup-Crick Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 par(new=TRUE)
-plot(raup.results[,2]~row.names(raup.results), pch=19, col="red",ylim=c(0,1), type="b",cex=2, xaxt="n", ylab="Raup-Crick Dissimilarity", xlab="Elevation (m)")
+plot(raup.results[,2]~row.names(raup.results), pch=19, col="red",ylim=c(0,1), 
+     type="b",cex=2, xaxt="n", ylab="Raup-Crick Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 xtick=seq(300,500, by=100)
-axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"))
+axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"), cex.axis=1.2)
 legend("topleft", legend=c("pre H. Maria", "post H. Maria"), col=c("black", "red"), lty=1,pch=19)
 
-plot(raup.results[,3]~row.names(raup.results), pch=19, col="black",ylim=c(-2.5,2.5), type="b", cex=2, xaxt="n", ylab="SES.Raup-Crick Dissimilarity", xlab="Elevation (m)")
+plot(raup.results[,3]~row.names(raup.results), pch=19, col="black",ylim=c(-2.5,2.5), 
+     type="b", cex=2, xaxt="n", ylab="SES.Raup-Crick Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 par(new=TRUE)
-plot(raup.results[,4]~row.names(raup.results), pch=19, col="red",ylim=c(-2.5,2.5),type="b", cex=2, xaxt="n", ylab="SES.Raup-Crick Dissimilarity", xlab="Elevation (m)")
+plot(raup.results[,4]~row.names(raup.results), pch=19, col="red",ylim=c(-2.5,2.5),
+     type="b", cex=2, xaxt="n", ylab="SES.Raup-Crick Dissimilarity", xlab="Elevation (m)",cex.axis=1.2, cex.lab=1.2)
 xtick=seq(300,500, by=100)
-axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"))
+axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"), cex.axis=1.2)
 legend("topleft", legend=c("pre H. Maria", "post H. Maria"), col=c("black", "red"), lty=1, pch=19)
 
 # Figure 4
@@ -402,8 +414,10 @@ axis(side=1, at=xtick, labels=c("300m-400m", "400m-500m", "300m-500m"))
 
 
 
+# Not in published manuscript
+
 # Given adult community structure pre-hurricane, how similar are seedling communities post-hurricane
-# Figure 6
+# Figure 5 
 
 # Cdm has adults and seedlings pre- and post-hurricane.
 
