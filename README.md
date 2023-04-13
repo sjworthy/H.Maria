@@ -1,4 +1,6 @@
 # Site-specific impacts of a major hurricane on alpha and beta diversity in tropical forest seedling communities
+### Samantha J. Worthy, Vanessa E. Rubio, Kirstin Staiger, Boris Ngouajio, Jie Yang, Nathan G. Swenson
+### Published in Ecosphere: 12:e03651
 
 <a href="https://zenodo.org/badge/latestdoi/193531535"><img src="https://zenodo.org/badge/193531535.svg" alt="DOI"></a>
 
